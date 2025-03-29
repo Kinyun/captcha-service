@@ -1,15 +1,20 @@
 package usecase
 
 import (
+	redis2 "captcha-service/app/db/redis"
+	impl2 "captcha-service/app/db/redis/impl"
 	"captcha-service/app/utils/steambap"
 	"captcha-service/app/utils/steambap/impl"
+	"github.com/redis/go-redis/v9"
 )
 
 type Connection struct {
+	redis *redis.Client
 }
 
 type Repository struct {
-	steambap steambap.SteambapCaptcha
+	steambap  steambap.SteambapCaptcha
+	redisRepo redis2.RedisService
 }
 
 type Captcha struct {
@@ -17,19 +22,22 @@ type Captcha struct {
 	repository Repository
 }
 
-func NewCaptchaRepository() Repository {
+func NewCaptchaRepository(redisConn *redis.Client) Repository {
 	return Repository{
-		steambap: impl.NewSteambapCaptcha(),
+		steambap:  impl.NewSteambapCaptcha(),
+		redisRepo: impl2.NewDB(redisConn),
 	}
 }
 
-func New(repository Repository) *Captcha {
+func New(redisConn *redis.Client, repository Repository) *Captcha {
 	return &Captcha{
-		conn:       Connection{},
+		conn: Connection{
+			redis: redisConn,
+		},
 		repository: repository,
 	}
 }
 
-func Initialize() *Captcha {
-	return New(NewCaptchaRepository())
+func Initialize(redisConn *redis.Client) *Captcha {
+	return New(redisConn, NewCaptchaRepository(redisConn))
 }

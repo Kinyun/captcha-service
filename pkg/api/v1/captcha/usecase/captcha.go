@@ -1,9 +1,11 @@
 package usecase
 
 import (
+	"captcha-service/app/config/constant"
 	"captcha-service/app/utils/steambap/impl"
 	"captcha-service/pkg/api/v1/captcha/models"
 	"context"
+	"encoding/json"
 	"fmt"
 	"time"
 )
@@ -22,6 +24,13 @@ func (capt *Captcha) GenerateCaptcha(ctx context.Context, request *models.Reques
 	if err != nil {
 		//log.Printf("err : %v", err)
 		return models.ResponseGenerateCaptcha{}, err
+	}
+
+	responseByte, _ := json.Marshal(captcha)
+
+	err = capt.repository.redisRepo.Set(ctx, "set Captcha to redis", fmt.Sprintf(captcha.CaptchaID), responseByte, expiredTimeRedis)
+	if err != nil {
+		return models.ResponseGenerateCaptcha{}, constant.ErrInternal
 	}
 
 	return models.ResponseGenerateCaptcha{

@@ -41,3 +41,32 @@ func ServiceLog(ctx context.Context, begin time.Time, param, request, response i
 	}
 	singleton.WithRequestID(requestID).Info(constant.LLvlService, fields...)
 }
+
+func RedisLog(ctx context.Context, begin time.Time, method, status, info string, value []byte, err error) {
+	var (
+		requestID = FromContext(ctx)
+		fields    = []zap.Field{
+			zap.String("method", method),
+			zap.String("status", status),
+			zap.String("info", info),
+		}
+	)
+	if !begin.IsZero() {
+		fields = append(fields, zap.String("time", begin.Format(constant.DateFormatWithTime)))
+	}
+
+	if value != nil && len(value) > 0 {
+		if IsJSON(value) {
+			fields = append(fields, zap.Any("body", json.RawMessage(value)))
+		} else {
+			fields = append(fields, zap.Any("body", value))
+		}
+	}
+
+	if err != nil {
+		fields = append(fields, zap.String("warn", err.Error()))
+		singleton.WithRequestID(requestID).Warn(constant.LLvlRedis, fields...)
+	} else {
+		singleton.WithRequestID(requestID).Info(constant.LLvlRedis, fields...)
+	}
+}

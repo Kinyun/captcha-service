@@ -2,10 +2,13 @@ package api
 
 import (
 	"captcha-service/app/config"
+	redis2 "captcha-service/app/db/redis"
 	"captcha-service/app/server"
 	"captcha-service/pkg/api/v1/captcha/routes"
 	"captcha-service/pkg/api/v1/captcha/usecase"
 	"github.com/labstack/echo/v4"
+	"github.com/redis/go-redis/v9"
+	"log"
 )
 
 // function as the maintenance switcher
@@ -18,6 +21,16 @@ func maintenanceMode(next echo.HandlerFunc) echo.HandlerFunc {
 	}
 }
 
+func initDatabase() *redis.Client {
+
+	redisConn, err := redis2.NewConnectionRedis()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return redisConn
+}
+
 func Start() {
 
 	//// Load ENV from file
@@ -26,6 +39,8 @@ func Start() {
 	//	fmt.Print("unable to load .env file: ", err)
 	//}
 
+	redisConn := initDatabase()
+
 	// Init the Echo Framework
 	e := server.InitEcho()
 
@@ -33,7 +48,7 @@ func Start() {
 	captchaV1 := e.Group("/v1")
 	captchaV1.Use(maintenanceMode)
 
-	routes.NewHTTP(usecase.Initialize(), captchaV1)
+	routes.NewHTTP(usecase.Initialize(redisConn), captchaV1)
 
 	// Start the server
 	server.Start(e)
