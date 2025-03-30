@@ -17,9 +17,9 @@ func InitEcho() *echo.Echo {
 	e := echo.New()
 	e.Use(
 		middleware.Recover(),
-		middleware.CORS(),
-		// middleware.Logger(),
+		middleware.CORS(), // default cors echo
 		customMw.Logging(),
+		middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(10)),
 	)
 
 	e.GET("/", func(c echo.Context) error {

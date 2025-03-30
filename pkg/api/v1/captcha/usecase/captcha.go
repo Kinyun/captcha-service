@@ -28,7 +28,7 @@ func (capt *Captcha) GenerateCaptcha(ctx context.Context, request *models.Reques
 
 	responseByte, _ := json.Marshal(captcha)
 
-	err = capt.repository.redisRepo.Set(ctx, "set Captcha to redis", fmt.Sprintf(captcha.CaptchaID), responseByte, expiredTimeRedis)
+	err = capt.repository.redisRepo.Set(ctx, "set result captcha to redis", fmt.Sprintf(captcha.CaptchaID), responseByte, expiredTimeRedis)
 	if err != nil {
 		return models.ResponseGenerateCaptcha{}, constant.ErrInternal
 	}

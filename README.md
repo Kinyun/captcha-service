@@ -100,6 +100,7 @@ This project is licensed under the MIT License.
 
 ## Future Improvements
 
+*   **Verify Captcha:** Adding endpoint for verifying image captcha.
 *   **More Captcha Algorithms:** Add support for other captcha algorithms.
 *   **Rate Limiting:** Implement rate limiting to prevent abuse.
 *   **API Documentation:** Generate comprehensive API documentation (e.g., using Swagger).
