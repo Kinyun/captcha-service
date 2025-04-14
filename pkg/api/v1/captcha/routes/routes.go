@@ -31,6 +31,10 @@ func (h *HTTP) generateCaptcha(c echo.Context) error {
 		return server.ResponseFail(c, err)
 	}
 
+	if err := request.Validate(); err != nil {
+		return server.ResponseFail(c, err)
+	}
+
 	ctx := appModel.NewContext(context.Background(), requestID)
 
 	result, err := h.svc.GenerateCaptcha(ctx, request)
@@ -48,6 +52,10 @@ func (h *HTTP) verifyCaptcha(c echo.Context) error {
 	)
 
 	if err := c.Bind(request); err != nil {
+		return server.ResponseFail(c, err)
+	}
+
+	if err := request.Validate(); err != nil {
 		return server.ResponseFail(c, err)
 	}
 

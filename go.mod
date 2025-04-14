@@ -4,6 +4,7 @@ go 1.23.2
 
 require (
 	github.com/caarlos0/env v3.5.0+incompatible
+	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/gofrs/uuid v4.4.0+incompatible
 	github.com/labstack/echo/v4 v4.13.3
 	github.com/redis/go-redis/v9 v9.7.0

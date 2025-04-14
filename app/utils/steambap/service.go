@@ -1,9 +1,9 @@
 package steambap
 
 import (
-	"captcha-service/app/utils/steambap/impl"
+	steambap "captcha-service/app/utils/steambap/model"
 )
 
 type SteambapCaptcha interface {
-	GenerateCaptcha(request impl.AttributeSteambap) (impl.CaptchaSteambap, error)
+	GenerateCaptcha(request steambap.AttributeSteambap) (steambap.CaptchaSteambap, error)
 }
