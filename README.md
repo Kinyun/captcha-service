@@ -16,9 +16,6 @@ The Captcha Service is a Go-based microservice designed to generate and verify C
 *   **Redis Integration:** Uses Redis for storing and managing CAPTCHA data.
 *   **Middleware Logging:** Provides middleware for logging HTTP requests and responses.
 *   **Configuration Management:** Supports configuration via environment variables or a configuration file.
-*   **Well-Structured Code:** Follows Go best practices for code organization and maintainability.
-*   **Testable:** Includes unit tests to ensure code quality and reliability.
-* **Error Handling:** Implement error handling for each function.
 
 ## Technologies Used
 
