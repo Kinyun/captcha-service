@@ -66,5 +66,5 @@ func (h *HTTP) verifyCaptcha(c echo.Context) error {
 		return server.ResponseFail(c, err)
 	}
 
-	return server.ResponseOK(c, "success", nil)
+	return server.ResponseNoContent(c, "success")
 }

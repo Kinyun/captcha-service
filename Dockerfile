@@ -1,4 +1,4 @@
-FROM golang:1.21.11-alpine as build-env
+FROM golang:1.23.2-alpine AS build-env
 
 WORKDIR /app
 
@@ -22,7 +22,6 @@ WORKDIR /app
 RUN addgroup -S golang && adduser -S gouser -G golang
 
 COPY --from=build-env /go/bin/app /app/app
-COPY assets/ /app/assets
 
 # Change ownership to the non-root user
 RUN chown gouser:golang app

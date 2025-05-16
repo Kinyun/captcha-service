@@ -100,12 +100,12 @@ This project is licensed under the MIT License.
 
 ## Future Improvements
 
-*   **Verify Captcha:** Adding endpoint for verifying image captcha.
+*   **Authorization** Adding authorization to access endpoint.
+*   **Connection RPC** Adding connection RPC.
 *   **More Captcha Algorithms:** Add support for other captcha algorithms.
 *   **Rate Limiting:** Implement rate limiting to prevent abuse.
 *   **API Documentation:** Generate comprehensive API documentation (e.g., using Swagger).
 *   **More Robust Error Handling:** Add more specific error types.
-* **Health Check:** Add health check for redis.
 * **Dependency Injection:** Implement dependency injection.
 * **More Test:** Add more test case.
 

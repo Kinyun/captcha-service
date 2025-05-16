@@ -7,6 +7,7 @@ import (
 	"log"
 	"strconv"
 	"sync"
+	"time"
 )
 
 var (
@@ -27,23 +28,24 @@ func connectRedisDB() *redis.Client {
 	db, _ := strconv.Atoi(config.GetConfig().RedisDb)
 	maxRetries, _ := strconv.Atoi(config.GetConfig().RedisMaxRetries)
 	maxIdleConn, _ := strconv.Atoi(config.GetConfig().RedisMaxIdleConnections)
-	client := redis.NewClient(&redis.Options{
+	opt := &redis.Options{
 		Addr:         config.GetConfig().RedisAddress,
 		Password:     config.GetConfig().RedisPassword,
 		DB:           db,
-		MaxRetries:   maxRetries,
 		MaxIdleConns: maxIdleConn,
-		ReadTimeout:  5,
-		WriteTimeout: 5,
-	})
+		MaxRetries:   maxRetries,
+		ReadTimeout:  time.Minute * 1,
+		WriteTimeout: time.Minute * 3,
+	}
+	redisClient := redis.NewClient(opt)
 	// Ping to check connection
-	_, err := client.Ping(context.Background()).Result()
+	_, err := redisClient.Ping(context.Background()).Result()
 	if err != nil {
 		log.Panicf("got an error while connecting redis server, error: %s", err)
 
 	}
 
-	return client
+	return redisClient
 }
 
 func NewConnectionRedis() (*redis.Client, error) {

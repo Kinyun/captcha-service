@@ -14,6 +14,13 @@ func ResponseOK(c echo.Context, msg string, r interface{}) error {
 	})
 }
 
+func ResponseNoContent(c echo.Context, msg string) error {
+	return c.JSON(http.StatusNoContent, models.CommonResponse{
+		Error:   false,
+		Message: msg,
+	})
+}
+
 func ResponseBadRequest(c echo.Context, err error) error {
 	return c.JSON(http.StatusBadRequest, models.CommonResponse{
 		Error:   true,
